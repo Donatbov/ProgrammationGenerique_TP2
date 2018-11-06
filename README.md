@@ -21,6 +21,8 @@ On développera un certain nombre de services autour de ces images:
 
 
 
+
+
 L'objectif de ce TP est de ce familiariser avec la programmation générique en C++. A l'issue du TP on aura pratiqué:
 
 -l'écriture de classes génériques via les patrons de classe
