@@ -102,13 +102,13 @@ public:
         // First line : version
         getline(input,inputLine);
         version = inputLine;
-        std::cout << "version: " << version << std::endl;
+        //std::cout << "version: " << version << std::endl;
 
-        /*
+        /* // pas de commentaire dans kowloon.ppm
         // Second line : comment
         getline(input,inputLine);
         comment = inputLine;
-        std::cout << "comment: " << comment << std::endl;
+        //std::cout << "comment: " << comment << std::endl;
          */
 
         // Third line : size
@@ -117,22 +117,22 @@ public:
         stringstream sstemp;
         sstemp << inputLine;
         sstemp >> numcols >> numrows;
-        img = Image(numcols, numrows);
-        std::cout << "numcols: " << numcols << " numrows: " << numrows <<std::endl;
+        //std::cout << "numcols: " << numcols << " numrows: " << numrows <<std::endl;
 
         // fourth line : colorLevel
         getline(input,inputLine);
         colorLevel = std::stoi(inputLine);    // 255 en général
-        std::cout << "colorLevel: " << colorLevel << std::endl;
+        //std::cout << "colorLevel: " << colorLevel << std::endl;
 
+        img = Image(numcols, numrows);  // création de l'image
 
 
         // Following lines : data
         // Continue with a stringstream
         ss << input.rdbuf();
 
-        if (version == "P6"){
-            unsigned char valueR; //on utilise un ui pour que la lecture dans le flux de '11' ne soit pas '1' '1'
+        if (version == "P6"){   // Version en Bytes des images couleurs
+            unsigned char valueR;
             unsigned char valueG;
             unsigned char valueB;
             for (auto it = img.begin(); it != img.end(); ++it) {

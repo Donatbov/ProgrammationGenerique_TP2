@@ -1,7 +1,7 @@
 #include <iostream>
 #include <fstream>
 #include "Color.hpp"
-#include "Image2D.hpp"
+#include "Image2DReader.hpp"
 #include "Image2DWriter.hpp"
 
 using namespace std;
@@ -77,8 +77,7 @@ int main( int argc, char** argv )
 
     }
     else{
-        std::cerr << "Pas de argv[1] et/ou argv[2], attendus : fichier_d_entree "
-                  << "fichier_de_sortie \"double-brighness\" ou \"filtrage-median {k}\" ou \"egalisation\" ";
+        std::cerr << "Pas de argv[1] et/ou argv[2], attendus : fichier_d_entree ";
     }
 
 

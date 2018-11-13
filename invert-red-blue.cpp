@@ -1,5 +1,6 @@
 #include <iostream>
 #include <fstream>
+#include "Color.hpp"
 #include "Image2DReader.hpp"
 #include "Image2DWriter.hpp"
 
@@ -7,23 +8,17 @@ using namespace std;
 
 int main( int argc, char** argv )
 {
-    typedef unsigned char GrayLevel;
-    typedef Image2D<GrayLevel> GrayLevelImage2D;
-    /* //test
-    GrayLevelImage2D img( 8, 8, 5 ); // imagette 8x8 remplie de 5
-    for ( int y = 0; y < img.h(); ++y )
-    {
-        for ( int x = 0; x < img.w(); ++x )
-            cout << " " << (int) img.at( x, y ); // la conversion permet de voir les caractères sous forme d'entiers.
-        cout << std::endl;
-    }*/
+    typedef Image2D<Color> ColorImage2D;
+    typedef ColorImage2D::Iterator Iterator;
+    typedef ColorImage2D::ConstIterator ConstIterator;
 
-    //test lire une image PGM et l'écrire
     if(argv[1] && argv[2]) {
-        GrayLevelImage2D img;
+        ColorImage2D img;
+
+        // import
         ifstream input(argv[1]);
         try {
-            Image2DReader<unsigned char>::read(img, input);
+            Image2DReader<Color>::read(img, input);
         }
         catch (char const *msg) {
             std::cerr << "Exception: " << msg << std::endl;
@@ -33,9 +28,16 @@ int main( int argc, char** argv )
         }
         input.close();
 
-        //  export
+        // traitement
+        for (Iterator it = img.begin(); it != img.end(); ++it) {
+            Color c = *it;
+            *it = Color(c.blue, c.green, c.red);    // on inverse les canaux rouges et bleus
+        }
+
+
+        // export
         ofstream output(argv[2]);
-        Image2DWriter<GrayLevel>::write(img, output, false);
+        Image2DWriter<Color>::write(img, output, false);
         output.close();
         std::cout << std::endl;
 
@@ -44,5 +46,7 @@ int main( int argc, char** argv )
         std::cerr << "Pas de argv[1] et/ou argv[2], attendus : fichier_d_entree ";
     }
 
+
     return 0;
 }
+
