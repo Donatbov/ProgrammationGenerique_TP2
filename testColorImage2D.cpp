@@ -12,17 +12,15 @@ int main( int argc, char** argv )
     typedef ColorImage2D::Iterator Iterator;
     typedef ColorImage2D::ConstIterator ConstIterator;
     //ColorImage2D img( 8, 8, Color(0, 255, 0) ); // imagette 8x8 remplie de couleur verte
-    ColorImage2D img( 256, 256, Color(0, 0, 0) ); // imagette 256x256 remplie de couleur verte
+    // test iterator
+    /*ColorImage2D img( 256, 256, Color(0, 0, 0) ); // imagette 256x256 remplie de couleur verte
     Iterator it = img.begin();
     for ( int y = 0; y < img.h(); ++y )
     {
         for ( int x = 0; x < img.w(); ++x )
-            /* //pour afficher le contenu
-            cout << "  (" << (int) img.at( x, y ).r() << "," << (int) img.at( x, y ).g() << "," << (int) img.at( x, y ).b() << ")"; // la conversion permet de voir les couleurs sous la forme (r,g,b) avec r, g et b entre 0 et 1
-        cout << std::endl;
-             */
-            *it++ = Color( y, x, (2*x+2*y) % 256 );
-    }
+
+            // *it++ = Color( y, x, (2*x+2*y) % 256 );
+    }*/
     /*
     std::ofstream output( "colors.ppm"); // ios::binary for Windows system
     output << "P6" << std::endl; // PPM raw
@@ -47,12 +45,42 @@ int main( int argc, char** argv )
     }
     output.close();
      */
-    ofstream output( "colors.ppm" );
+    /*ofstream output( "colors.ppm" );
     bool ok2 = Image2DWriter<Color>::write( img, output, false );
     if ( !ok2 ) {
         std::cerr << "Error writing output file." << std::endl;
         return 1;
     }
-    output.close();
+    output.close();*/
+
+    //test lire image et réécrire
+    //test lire une image PGM et l'écrire
+    if(argv[1] && argv[2]) {
+        ColorImage2D img;
+        ifstream input(argv[1]);
+        try {
+            Image2DReader<Color>::read(img, input);
+        }
+        catch (char const *msg) {
+            std::cerr << "Exception: " << msg << std::endl;
+        }
+        catch (...) {
+            std::cerr << "Exception inconnue." << std::endl;
+        }
+        input.close();
+
+        //  export
+        ofstream output(argv[2]);
+        Image2DWriter<Color>::write(img, output, false);
+        output.close();
+        std::cout << std::endl;
+
+    }
+    else{
+        std::cerr << "Pas de argv[1] et/ou argv[2], attendus : fichier_d_entree "
+                  << "fichier_de_sortie \"double-brighness\" ou \"filtrage-median {k}\" ou \"egalisation\" ";
+    }
+
+
     return 0;
 }

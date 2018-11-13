@@ -4,7 +4,8 @@
 #include <iostream>
 #include <string>
 #include "Color.hpp"
-#include "Image2D.hpp"
+#include "Image2DReader.hpp"
+#include "Image2DWriter.hpp"
 
 template <typename TValue>
 class Image2DWriter {

@@ -93,4 +93,5 @@ private:
         return (j*m_width) + i;
     }
 };
+
 #endif // _IMAGE2D_HPP_
