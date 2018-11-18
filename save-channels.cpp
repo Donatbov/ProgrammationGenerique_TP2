@@ -14,7 +14,7 @@ int main( int argc, char** argv )
     typedef ColorImage2D::Iterator ColorIterator;
     if ( argc < 2 )
     {
-        std::cerr << "Usage: save-green-channel <input.ppm>" << std::endl;
+        std::cerr << "Usage: save-channels <input.ppm>" << std::endl;
         return 0;
     }
     ColorImage2D img;
