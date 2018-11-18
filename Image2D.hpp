@@ -56,13 +56,14 @@ public:
         {}
     };
 
+
     /// @return un itérateur pointant sur le pixel (x,y).
     Iterator start( int x, int y ) { return Iterator( *this, x, y ); }
+
     /// @return un itérateur pointant sur le début de l'image
     Iterator begin() { return start( 0, 0 ); }
     /// @return un itérateur pointant après la fin de l'image
     Iterator end()   { return start( 0, h() ); }
-
     /// Un itérateur constant simple sur l'image.
     struct ConstIterator : public Container::const_iterator {
         ConstIterator( const Self & image, int x, int y )
@@ -72,17 +73,16 @@ public:
 
     /// @return un const_iterator pointant sur le pixel (x,y).
     ConstIterator start( int x, int y ) const{ return ConstIterator( *this, x, y ); }
+
     /// @return un const_iterator pointant sur le début de l'image
     ConstIterator begin() const{ return start( 0, 0 ); }
     /// @return un const_iterator pointant après la fin de l'image
     ConstIterator end() const{ return start( 0, h() ); }
-
     /// @return un const_iterator pointant sur le début de l'image
     ConstIterator cbegin() const{ return start( 0, 0 ); }
+
     /// @return un const_iterator pointant après la fin de l'image
     ConstIterator cend() const{ return start( 0, h() ); }
-
-
     /// un itérateur générique constant qui va regarder le parametre qu'il veut sur l'image en fct de l'accesseur
     template <typename TAccessor>
     struct GenericConstIterator : public Container::const_iterator {
@@ -113,18 +113,18 @@ public:
         }
     };
 
+
     /// @return un const_iterator generique pointant sur le pixel (x,y).
     template <typename Accessor>
     GenericConstIterator< Accessor > start( int x = 0, int y = 0 ) const
     { return GenericConstIterator< Accessor >( *this, x, y ); }
+
     /// @return un const_iterator generique pointant sur le début de l'image
     template <typename Accessor>
     GenericConstIterator< Accessor > begin() const{ return start < Accessor >( 0, 0 ); }
     /// @return un const_iterator generique pointant après la fin de l'image
     template <typename Accessor>
     GenericConstIterator< Accessor > end() const{ return start < Accessor >( 0, h() ); }
-
-
     /// un itérateur générique non constant qui va regarder le parametre qu'il veut sur l'image en fct de l'accesseur
     template <typename TAccessor>
     struct GenericIterator : public Container::iterator {
@@ -155,16 +155,23 @@ public:
         }
     };
 
+
     /// @return un iterator generique pointant sur le pixel (x,y).
     template <typename Accessor>
     GenericIterator< Accessor > start( int x = 0, int y = 0 )
     { return GenericIterator< Accessor >( *this, x, y ); }
+
     /// @return un iterator generique pointant sur le début de l'image
     template <typename Accessor>
     GenericIterator< Accessor > begin() { return start < Accessor >( 0, 0 ); }
     /// @return un iterator generique pointant après la fin de l'image
     template <typename Accessor>
     GenericIterator< Accessor > end() { return start < Accessor >( 0, h() ); }
+
+
+    std::pair<int, int> position(Iterator it) {
+        return std::pair<unsigned int, unsigned int>((it-begin()) % m_width , (it-begin()) / m_width);
+    }
 
 
 private:
