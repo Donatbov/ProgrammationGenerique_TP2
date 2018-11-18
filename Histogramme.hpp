@@ -27,7 +27,6 @@ public:
         for (int j = 1; j <= m_histogramme.size()-1; ++j) {
             m_histogramme_cummule[j] += m_histogramme_cummule[j-1];
         }
-
     }
 
     /**
