@@ -23,6 +23,38 @@ typedef TrivialAccessor<unsigned char> GrayLevelTrivialAccessor;
 // Accesseur trivial pour une image en couleur.
 typedef TrivialAccessor<Color> ColorTrivialAccessor;
 
+/// Accesseur à la composante rouge.
+struct ColorRedAccessor {
+    typedef unsigned char Value;
+    typedef Color Argument;
+    /// Même astuce que pour les références à un bit dans un tableau de bool.
+    struct ColorRedReference {
+        Argument & arg;
+
+        explicit ColorRedReference( Argument & someArg ) : arg( someArg ) {}
+        // Accesseur lvalue (écriture)
+        // permet d'écrire *it = 120 pour changer l'intensité du rouge
+        ColorRedReference& operator=( Value val )
+        {
+            arg.red = val;
+            return *this;
+        }
+        // Accesseur rvalue (lecture)
+        // permet d'écrire *it pour récupérer l'intensité du rouge
+        explicit operator Value() const
+        {
+            return arg.red;  // arg.red est de type Value.
+        }
+    };
+    typedef ColorRedReference Reference;
+    // Acces en lecture.
+    static Value access( const Argument & arg )
+    { return arg.red; }
+    // Acces en écriture.
+    static Reference access( Argument & arg )
+    { return ColorRedReference( arg ); }
+};
+
 /// Accesseur à la composante verte.
 struct ColorGreenAccessor {
     typedef unsigned char Value;
@@ -53,6 +85,38 @@ struct ColorGreenAccessor {
     // Acces en écriture.
     static Reference access( Argument & arg )
     { return ColorGreenReference( arg ); }
+};
+
+/// Accesseur à la composante bleue.
+struct ColorBlueAccessor {
+    typedef unsigned char Value;
+    typedef Color Argument;
+    /// Même astuce que pour les références à un bit dans un tableau de bool.
+    struct ColorBlueReference {
+        Argument & arg;
+
+        explicit ColorBlueReference( Argument & someArg ) : arg( someArg ) {}
+        // Accesseur lvalue (écriture)
+        // permet d'écrire *it = 120 pour changer l'intensité du bleu
+        ColorBlueReference& operator=( Value val )
+        {
+            arg.blue = val;
+            return *this;
+        }
+        // Accesseur rvalue (lecture)
+        // permet d'écrire *it pour récupérer l'intensité du bleu
+        explicit operator Value() const
+        {
+            return arg.blue;  // arg.green est de type Value.
+        }
+    };
+    typedef ColorBlueReference Reference;
+    // Acces en lecture.
+    static Value access( const Argument & arg )
+    { return arg.blue; }
+    // Acces en écriture.
+    static Reference access( Argument & arg )
+    { return ColorBlueReference( arg ); }
 };
 
 #endif //TP2_ACCESSOR_HPP

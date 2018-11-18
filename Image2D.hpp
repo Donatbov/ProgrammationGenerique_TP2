@@ -95,6 +95,21 @@ public:
 
         // Accès en lecture (rvalue)
         Value operator*() const { return Accessor::access(Container::const_iterator::operator*()); }
+
+        // Pre-incrémentation de l'itérateur.
+        GenericConstIterator operator++()
+        {
+            Container::const_iterator::operator++(); // avance avec Container::const_iterator::op++()
+            return *this; // retourne la position courante
+        }
+
+        // Post-incrémentation de l'itérateur.
+        GenericConstIterator operator++( int /* dummy_parameter */ )
+        {
+            GenericConstIterator tmp = *this; // sauve la position courante.
+            Container::const_iterator::operator++(); // avance avec Container::const_iterator::op++()
+            return tmp; // retourne la position précédente
+        }
     };
 
     /// @return un const_iterator generique pointant sur le pixel (x,y).

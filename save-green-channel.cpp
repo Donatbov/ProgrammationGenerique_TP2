@@ -1,4 +1,3 @@
-// save-green-channel.cpp
 #include <cmath>
 #include <iostream>
 #include <fstream>
