@@ -39,8 +39,7 @@ int main( int argc, char** argv )
     // Notez comment on appelle la méthode \b générique `begin` de `Image2D`.
     ColorGreenConstIterator itGreen = img.begin< ColorGreenAccessor >();
     // On écrit la composante verte dans l'image en niveaux de gris.
-    for ( GrayLevelIterator it = img2.begin(), itE = img2.end();
-          it != itE; ++it )
+    for ( GrayLevelIterator it = img2.begin(), itE = img2.end(); it != itE; ++it )
     {
         *it = *itGreen;
         ++itGreen;
