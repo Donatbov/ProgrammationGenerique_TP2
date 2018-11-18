@@ -82,6 +82,32 @@ public:
     /// @return un const_iterator pointant après la fin de l'image
     ConstIterator cend() const{ return start( 0, h() ); }
 
+    /// un itérateur générique qui va regarder le parametre qu'il veut sur l'image en fct de l'accesseur
+    template <typename TAccessor>
+    struct GenericConstIterator : public Container::const_iterator {
+        typedef TAccessor Accessor;
+        typedef typename Accessor::Argument ImageValue; // Color ou unsigned char
+        typedef typename Accessor::Value Value;      // unsigned char (pour ColorGreenAccessor)
+        typedef typename Accessor::Reference Reference;  // ColorGreenReference (pour ColorGreenAccessor)
+        GenericConstIterator(const Image2D<ImageValue> &image, int x, int y)
+                    : Container::const_iterator( image.m_data.begin() + image.index( x, y ) )// /!\ const
+        {}
+
+        // Accès en lecture (rvalue)
+        Value operator*() const { return Accessor::access(Container::const_iterator::operator*()); }
+    };
+
+    /// @return un const_iterator generique pointant sur le pixel (x,y).
+    template <typename Accessor>
+    GenericConstIterator< Accessor > start( int x = 0, int y = 0 ) const
+    { return GenericConstIterator< Accessor >( *this, x, y ); }
+    /// @return un const_iterator generique pointant sur le début de l'image
+    template <typename Accessor>
+    GenericConstIterator< Accessor > begin() const{ return start < Accessor >( 0, 0 ); }
+    /// @return un const_iterator generique pointant après la fin de l'image
+    template <typename Accessor>
+    GenericConstIterator< Accessor > end() const{ return start < Accessor >( 0, h() ); }
+
 
 private:
     Container m_data; // mes données; évitera de faire les allocations dynamiques
