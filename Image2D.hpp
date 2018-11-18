@@ -82,7 +82,8 @@ public:
     /// @return un const_iterator pointant après la fin de l'image
     ConstIterator cend() const{ return start( 0, h() ); }
 
-    /// un itérateur générique qui va regarder le parametre qu'il veut sur l'image en fct de l'accesseur
+
+    /// un itérateur générique constant qui va regarder le parametre qu'il veut sur l'image en fct de l'accesseur
     template <typename TAccessor>
     struct GenericConstIterator : public Container::const_iterator {
         typedef TAccessor Accessor;
@@ -122,6 +123,48 @@ public:
     /// @return un const_iterator generique pointant après la fin de l'image
     template <typename Accessor>
     GenericConstIterator< Accessor > end() const{ return start < Accessor >( 0, h() ); }
+
+
+    /// un itérateur générique non constant qui va regarder le parametre qu'il veut sur l'image en fct de l'accesseur
+    template <typename TAccessor>
+    struct GenericIterator : public Container::iterator {
+        typedef TAccessor Accessor;
+        typedef typename Accessor::Argument ImageValue; // Color ou unsigned char
+        typedef typename Accessor::Value Value;      // unsigned char (pour ColorGreenAccessor)
+        typedef typename Accessor::Reference Reference;  // ColorGreenReference (pour ColorGreenAccessor)
+        GenericIterator(Image2D<ImageValue> &image, int x, int y)
+                : Container::iterator( image.m_data.begin() + image.index( x, y ) )// /!\ non const
+        {}
+
+        // Accès en écriture (lvalue)
+        Reference operator*() { return Accessor::access( Container::iterator::operator*() ); }
+
+        // Pre-incrémentation de l'itérateur.
+        GenericIterator operator++()
+        {
+            Container::iterator::operator++(); // avance avec Container::iterator::op++()
+            return *this; // retourne la position courante
+        }
+
+        // Post-incrémentation de l'itérateur.
+        GenericIterator operator++( int /* dummy_parameter */ )
+        {
+            GenericIterator tmp = *this; // sauve la position courante.
+            Container::iterator::operator++(); // avance avec Container::iterator::op++()
+            return tmp; // retourne la position précédente
+        }
+    };
+
+    /// @return un iterator generique pointant sur le pixel (x,y).
+    template <typename Accessor>
+    GenericIterator< Accessor > start( int x = 0, int y = 0 )
+    { return GenericIterator< Accessor >( *this, x, y ); }
+    /// @return un iterator generique pointant sur le début de l'image
+    template <typename Accessor>
+    GenericIterator< Accessor > begin() { return start < Accessor >( 0, 0 ); }
+    /// @return un iterator generique pointant après la fin de l'image
+    template <typename Accessor>
+    GenericIterator< Accessor > end() { return start < Accessor >( 0, h() ); }
 
 
 private:
