@@ -136,7 +136,7 @@ struct ColorValueAccessor {
             float s;
             float v;
             arg.getHSV(h, s, v);
-            arg.setHSV(h, s, val);
+            arg.setHSV(h, s, (float) val / 255.0);
             return *this;
         }
         // S'occupe de retourner la valeur de la couleur arg (sans la changer).

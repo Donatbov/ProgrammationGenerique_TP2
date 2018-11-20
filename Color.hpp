@@ -67,10 +67,15 @@ struct Color {
     void setHSV( int h, float s, float v )
     {
         int hi = (h/60)%6;
-        float f = (h/60)-hi;
+        float f = (h/60.0f)-hi;
         float l = v * (1-s);
         float m = v * (1-f*s);
         float n = v*(1-(1-f)*s);
+        // On veut que r g b soit des unsigned char
+        v *= 255.0;
+        m *= 255.0;
+        n *= 255.0;
+        l *= 255.0;
         switch(hi){
             case 0 : red = (Byte)v ; green = (Byte)n ; blue = (Byte)l;
                 break;
@@ -86,6 +91,5 @@ struct Color {
                 break;
         }
     }
-
 };
 #endif //_COLOR_HPP_
