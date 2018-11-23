@@ -28,7 +28,7 @@ int main( int argc, char** argv )
     }
     input.close();
 
-    // création de l'image de l'histogramme
+    // création de l'histogramme
     Histogramme histo = Histogramme();
     histo.init(img.begin< ColorValueAccessor >(), img.end< ColorValueAccessor >());
 
